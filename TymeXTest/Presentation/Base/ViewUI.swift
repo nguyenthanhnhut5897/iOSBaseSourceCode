@@ -41,7 +41,17 @@ struct ViewUI {
 
 extension UIWindow {
     static var key: UIWindow? {
-        #warning("Need to update it based on the window that is presenting (there are multi windows form iOS 13")
-        return UIApplication.shared.windows.first { $0.isKeyWindow }
+        if #available(iOS 13.0, *) { 
+            // For iOS 13 and later
+            return UIApplication.shared
+                .connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+                .first { $0.isKeyWindow }
+        } else {
+            // Fallback for iOS 12 and earlier
+            return UIApplication.shared.keyWindow
+        }
     }
 }

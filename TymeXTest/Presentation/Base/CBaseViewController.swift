@@ -19,35 +19,35 @@ extension UIViewController: SFSafariViewControllerDelegate {
 }
 
 extension UIApplication {
-    class func topViewController(controller: UIViewController? = UIWindow.key?.rootViewController) -> UIViewController? {
-        if let navigationController = controller as? UINavigationController {
-            return topViewController(controller: navigationController.visibleViewController)
+    class func getTopMostViewController(controller: UIViewController? = UIWindow.key?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController,
+            let visibleVC = navigationController.visibleViewController {
+            return getTopMostViewController(controller: visibleVC)
         }
         
-        if let tabController = controller as? CTabbarController {
-            if let selected = tabController.selectedViewController {
-                return topViewController(controller: selected)
-            }
+        if let tabController = controller as? UITabBarController,
+            let selectedVC = tabController.selectedViewController {
+            return getTopMostViewController(controller: selectedVC)
         }
         
         if let presented = controller?.presentedViewController {
-            return topViewController(controller: presented)
+            return getTopMostViewController(controller: presented)
         }
         
         return controller
     }
     
-    /// Try to dismiss all presented screen until finish
-    /// completion: handle something after dismiss finish
-    class func dismissSpecialTopViewController(completion: @escaping (() -> Void)) {
-        #warning("Iplement again")
-//        if let presentedVC = AppDelegate.default.tabbarController?.selectedViewController?.presentedViewController {
-//            presentedVC.dismiss(animated: true, completion: {
-//                dismissSpecialTopViewController(completion: completion)
-//            })
-//        } else {
-//            completion()
-//        }
+    /// Try to dismiss all presented screen
+    /// completion: handler action after dismissing is finished
+    class func dismissAllPresentedViewControllers(animated: Bool = true, completion: @escaping () -> Void) {
+        guard let presented = UIWindow.key?.rootViewController?.presentedViewController else {
+            completion()
+            return
+        }
+        
+        presented.dismiss(animated: animated) {
+            dismissAllPresentedViewControllers(animated: animated, completion: completion)
+        }
     }
 }
 

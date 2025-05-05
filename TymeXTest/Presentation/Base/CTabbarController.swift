@@ -33,7 +33,7 @@ extension CTabbarController: UITabBarControllerDelegate {
         // Scroll to top when corresponding view controller was already selected and no other viewcontrollers are pushed
         guard tabBarController.viewControllers?[tabBarController.selectedIndex] == viewController,
               let navigationController = viewController as? UINavigationController, navigationController.viewControllers.count == 1,
-              var topViewController = navigationController.viewControllers.first else {
+              let topViewController = navigationController.viewControllers.first else {
             return true
         }
         

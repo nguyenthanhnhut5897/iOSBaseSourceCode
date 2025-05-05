@@ -97,13 +97,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         let user = vm?.userList.value[safe: indexPath.row]
-        
         cell.bindData(user: user)
+        cell.delegate = self
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         vm?.didSelectItem(at: indexPath.row)
+    }
+}
+
+extension HomeViewController: GithubUserCellDelegate {
+    func cell(_ cell: GithubUserCell, open gitLink: URL?) {
+        guard let url = gitLink else { return }
+        openSafari(with: url)
     }
 }

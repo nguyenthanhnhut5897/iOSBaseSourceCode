@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol GithubUserCellDelegate: AnyObject {
+    func cell(_ cell: GithubUserCell, open gitLink: URL?)
+}
+
 class GithubUserCell: UITableViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -22,6 +26,7 @@ class GithubUserCell: UITableViewCell {
     }
     
     var data: GUser?
+    weak var delegate: GithubUserCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -71,7 +76,7 @@ class GithubUserCell: UITableViewCell {
     
     @objc private func linkTapped() {
         if let landingPageUrl = self.data?.landingPageUrl, let url = URL(string: landingPageUrl) {
-            UIApplication.shared.open(url)
+            delegate?.cell(self, open: url)
         }
     }
 }

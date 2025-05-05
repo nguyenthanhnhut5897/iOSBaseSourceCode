@@ -131,7 +131,7 @@ class BaseViewController: CBaseViewController, UIScrollViewDelegate {
             self?.present(alert, animated: true, completion: nil)
         }
         
-        if let topvc = UIApplication.topViewController() as? UIAlertController {
+        if let topvc = UIApplication.getTopMostViewController() as? UIAlertController {
             if let errCode = errCode {
                 if topvc.view.tag != errCode {
                     topvc.dismiss(animated: false, completion: {
@@ -185,7 +185,7 @@ class BaseViewController: CBaseViewController, UIScrollViewDelegate {
             self?.present(alert, animated: true, completion: nil)
         }
         
-        if let topvc = UIApplication.topViewController() as? UIAlertController {
+        if let topvc = UIApplication.getTopMostViewController() as? UIAlertController {
             topvc.dismiss(animated: false, completion: {
                 showAlert()
             })

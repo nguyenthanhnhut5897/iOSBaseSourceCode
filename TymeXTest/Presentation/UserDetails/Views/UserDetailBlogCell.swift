@@ -33,6 +33,7 @@ class UserDetailBlogCell: UITableViewCell {
     }
     
     private func setupUI() {
+        selectionStyle = .none
         addSubviews(titleLabel, contentBlogLabel)
         
         titleLabel.snp.makeConstraints { make in
